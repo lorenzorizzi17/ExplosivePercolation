@@ -1,0 +1,199 @@
+#include "graph.hpp"
+
+
+LinkedGraph::LinkedGraph(int n) : N(n) {
+    nodes.reserve(N); // Reserve space for N nodes
+    for (int i = 0; i < N; i++){
+        nodes.push_back(Node());
+    }
+}
+
+std::vector<int> LinkedGraph::getClusterDistribution() const {
+    std::vector<int> result;
+    for (const auto& node : nodes) {
+        if (node.next == nullptr) {
+            result.push_back(node.ClusterSize); // If it's a root node, add its cluster size
+        }
+    }
+    return result;
+}
+
+double LinkedGraph::getAverageClusterSize() const {
+    std::vector<int> clusterSizes = getClusterDistribution();
+    double totalSize = 0;
+    for (int size : clusterSizes) {
+        totalSize += size;
+    }
+    return totalSize / clusterSizes.size();
+}
+
+int LinkedGraph::getSecondLargestClusterSize() const {
+    std::vector<int> clusterSizes = getClusterDistribution();
+    if (clusterSizes.size() < 2) {
+        return 0; // Not enough clusters to find the second largest
+    }
+    std::sort(clusterSizes.begin(), clusterSizes.end(), std::greater<int>());
+    return clusterSizes[1]; // Return the second largest cluster size
+}
+
+int LinkedGraph::getLCC(){
+    std::vector<int> clusterSizes = getClusterDistribution();
+    return *max_element(clusterSizes.begin(), clusterSizes.end(), [](int a, int b) { return a < b;});
+}
+
+Node* LinkedGraph::findRoot(Node* node) {
+    while (node->next != nullptr) {
+        node = node->next;
+    }
+    return node;
+}
+
+void LinkedGraph::addRandomEdge() {
+    // first of all, select two random nodes
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, N - 1);
+    int u = dis(gen);
+    int v = dis(gen);
+
+    Node* rootU = findRoot(&nodes[u]);  // Find the root of node u
+    Node* rootV = findRoot(&nodes[v]);  // Find the root of node v
+    int S1 = rootU->ClusterSize; // Size of the cluster of u
+    int S2 = rootV->ClusterSize; // Size of the cluster of v
+
+    if (rootU != rootV) { // If they are not in the same cluster
+        // Merge the two clusters
+        if (S1 < S2) {
+            rootU->next = rootV; // Point u to v
+            rootV->ClusterSize += S1; // Update the size of the cluster of v
+        } else {
+            rootV->next = rootU; // Point v to u
+            rootU->ClusterSize += S2; // Update the size of the cluster of u
+        }
+    }
+}
+
+void LinkedGraph::addRandomEdges(int numEdges) {
+    for (int i = 0; i < numEdges; ++i) {
+        addRandomEdge();
+    }
+}
+
+void LinkedGraph::addRandomProductRule(){
+    // Select two random nodes
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, N - 1);
+
+    // first pair (one edge)
+    int u1 = dis(gen);
+    int u2 = dis(gen);
+    // second pair (one edge)
+    int v1 = dis(gen);
+    int v2 = dis(gen);
+
+    Node* rootU1 = findRoot(&nodes[u1]);  // Find the root of node u1
+    Node* rootU2 = findRoot(&nodes[u2]);  // Find the root of node u2
+    int s1 = rootU1->ClusterSize; // Size of the cluster of u1
+    int s2 = rootU2->ClusterSize; // Size of the cluster of u2
+    int product1 = s1 * s2; // Product of the sizes of the clusters
+
+    Node* rootV1 = findRoot(&nodes[v1]);  // Find the root of node u1
+    Node* rootV2 = findRoot(&nodes[v2]);  // Find the root of node u2
+    int s1v = rootV1->ClusterSize; // Size of the cluster of u1
+    int s2v = rootV2->ClusterSize; // Size of the cluster of u2
+    int product2 = s1v * s2v; // Product of the sizes of the clusters
+
+    if (product1 < product2) {
+        // Select the first edge, u1-u2 and discard the first edge
+        if (rootU1 != rootU2) { // If they are not in the same cluster
+            rootU1->next = rootU2; // Point u1 to u2
+            rootU2->ClusterSize += s1; // Update the size of the cluster of u2
+        }
+    } else {
+        // Select the second edge, v1-v2 and discard the first edge
+        if (rootV1 != rootV2) { // If they are not in the same cluster
+            rootV1->next = rootV2; // Point v1 to v2
+            rootV2->ClusterSize += s1v; // Update the size of the cluster of v2
+        }
+    }
+}
+
+void LinkedGraph::addRandomEdgesProductRule(int numEdges) {
+    for (int i = 0; i < numEdges; ++i) {
+        this->addRandomProductRule();
+    }
+}
+
+void LinkedGraph::addRandomSumRule(){
+    // Select two random nodes
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, N - 1);
+
+    // first pair (one edge)
+    int u1 = dis(gen);
+    int u2 = dis(gen);
+    // second pair (one edge)
+    int v1 = dis(gen);
+    int v2 = dis(gen);
+
+    Node* rootU1 = findRoot(&nodes[u1]);  // Find the root of node u1
+    Node* rootU2 = findRoot(&nodes[u2]);  // Find the root of node u2
+    int s1 = rootU1->ClusterSize; // Size of the cluster of u1
+    int s2 = rootU2->ClusterSize; // Size of the cluster of u2
+    int product1 = s1 + s2; // Product of the sizes of the clusters
+
+    Node* rootV1 = findRoot(&nodes[v1]);  // Find the root of node u1
+    Node* rootV2 = findRoot(&nodes[v2]);  // Find the root of node u2
+    int s1v = rootV1->ClusterSize; // Size of the cluster of u1
+    int s2v = rootV2->ClusterSize; // Size of the cluster of u2
+    int product2 = s1v + s2v; // Product of the sizes of the clusters
+
+    if (product1 < product2) {
+        // Select the first edge, u1-u2 and discard the first edge
+        if (rootU1 != rootU2) { // If they are not in the same cluster
+            rootU1->next = rootU2; // Point u1 to u2
+            rootU2->ClusterSize += s1; // Update the size of the cluster of u2
+        }
+    } else {
+        // Select the second edge, v1-v2 and discard the first edge
+        if (rootV1 != rootV2) { // If they are not in the same cluster
+            rootV1->next = rootV2; // Point v1 to v2
+            rootV2->ClusterSize += s1v; // Update the size of the cluster of v2
+        }
+    }
+}
+
+void LinkedGraph::addRandomEdgesSumRule(int numEdges) {
+    for (int i = 0; i < numEdges; ++i) {
+        this->addRandomSumRule();
+    }
+}
+
+
+void LinkedGraph::addEdgeBFRule(){
+    // Select two random nodes
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, N - 1);
+
+    // first pair (one edge)
+    int u1 = dis(gen);
+    int u2 = dis(gen);
+
+    if (nodes[u1].next == nullptr && nodes[u2].next == nullptr && nodes[u2].ClusterSize == 1 && nodes[u1].ClusterSize == 1 && u1 != u2) { //so both of them are root nodes
+        nodes[u1].next = &nodes[u2]; // Point u1 to u2
+        nodes[u2].ClusterSize += 1; // Update the size of the cluster of u2
+        return;
+    } // Otherwise, find a new pair and connect it
+
+    this->addRandomEdge();
+}
+
+void LinkedGraph::addEdgesBFRule(int numEdges) {
+    for (int i = 0; i < numEdges; ++i) {
+        this->addEdgeBFRule();
+    }
+}
+
