@@ -1,5 +1,5 @@
 #include <fstream>
-#include "./graph.hpp"
+#include "./include/graph.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// This main functions is used to compute the LCC, the second largest cluster size and the average cluster size
@@ -11,8 +11,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(){
-    int N = 50000;      // Number of nodes in the graph
-    int rep = 10;       // Number of independent realizations for each graph
+    int N = 10000;      // Number of nodes in the graph
+    int rep = 5;       // Number of independent realizations for each graph
 
     int step = 15; 
     int tmax = 1.5*N;

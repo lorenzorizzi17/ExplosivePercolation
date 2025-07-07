@@ -3,16 +3,16 @@
 #include <random>
 #include <fstream>
 
-#include "./graph.hpp"
+#include "include/graph.hpp"
 
 int main(){
-    int N = 10000;
+    int N = 100000;
 
-    int pValues[] = {N/10, N/5, N/3, N/2, N, 2*N};
+    int tValues[] = {N/2-40000, N/2-20000, N/2, N/2+20000, N/2 + 40000};
 
-    for(int p : pValues){
+    for(int p : tValues){
         LinkedGraph graph(N); // Create a new graph with N nodes
-        graph.addRandomEdges(p); //critical point
+        graph.addRandomEdges(p);    // insert here the type of percoltion
         std::vector<int> distribution = graph.getClusterDistribution();
         std::string prefix = std::to_string(p);
         std::ofstream file("./data/ClusterDistribution/ER_" + prefix + ".txt");
@@ -21,9 +21,4 @@ int main(){
         }
         file.close();
     }
-    
-    
-   
-
-
 }
