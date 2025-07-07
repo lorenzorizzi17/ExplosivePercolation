@@ -1,5 +1,5 @@
-#include "graph.hpp"
-
+#include "../include/graph.hpp"
+#include<map>
 
 LinkedGraph::LinkedGraph(int n) : N(n) {
     nodes.reserve(N); // Reserve space for N nodes
@@ -19,12 +19,20 @@ std::vector<int> LinkedGraph::getClusterDistribution() const {
 }
 
 double LinkedGraph::getAverageClusterSize() const {
+    // first of all, get the cluster distribution
     std::vector<int> clusterSizes = getClusterDistribution();
-    double totalSize = 0;
-    for (int size : clusterSizes) {
-        totalSize += size;
+    // build a map to count occurrences of each cluster size (like table() in R)
+    std::map<int, int> occurrences;
+    for (int cl : clusterSizes) {
+        occurrences[cl]++;
     }
-    return totalSize / clusterSizes.size();
+    // Avoid the LCC, clearly
+    double numerator=0 ; double denominator = 0;
+    for(auto it = occurrences.begin(); it != std::prev(occurrences.end()); ++it) {
+        numerator += it->first* it->first* it->second; 
+        denominator += it->second*it->first; 
+    }
+    return numerator / denominator;
 }
 
 int LinkedGraph::getSecondLargestClusterSize() const {
