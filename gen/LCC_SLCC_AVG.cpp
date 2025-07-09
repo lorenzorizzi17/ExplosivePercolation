@@ -11,11 +11,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(){
-    int N = 1e5;      // Number of nodes in the graph
+    int N = 1e6;      // Number of nodes in the graph
     int rep = 5;       // Number of independent realizations for each graph
 
-    int step = 15; 
-    int tmax = 1.5*N;
+    int step = 150; 
+    int tmax = 1*N;
     LinkedGraph graph(N);
     
     std::ofstream ERfile("../data/LCC/ER.txt");

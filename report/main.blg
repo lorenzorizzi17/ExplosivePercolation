@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: plainnat.bst
+Database file #1: bibliography.bib
+Warning--I didn't find a database entry for "barrat2008dynamical"
+Warning--I didn't find a database entry for "de2013mathematical"
+Warning--to sort, need author or key in weforumProtectingCritical
+Warning--empty year in weforumProtectingCritical
+You've used 2 entries,
+            2773 wiz_defined-function locations,
+            610 strings with 5342 characters,
+and the built_in function-call counts, 821 in all, are:
+= -- 76
+> -- 30
+< -- 0
++ -- 11
+- -- 9
+* -- 69
+:= -- 115
+add.period$ -- 8
+call.type$ -- 2
+change.case$ -- 9
+chr.to.int$ -- 2
+cite$ -- 7
+duplicate$ -- 36
+empty$ -- 79
+format.name$ -- 10
+if$ -- 176
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 1
+newline$ -- 20
+num.names$ -- 4
+pop$ -- 25
+preamble$ -- 1
+purify$ -- 7
+quote$ -- 0
+skip$ -- 25
+stack$ -- 0
+substring$ -- 32
+swap$ -- 2
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 22
+warning$ -- 2
+while$ -- 4
+width$ -- 0
+write$ -- 35
+(There were 4 warnings)

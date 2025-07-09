@@ -56,12 +56,13 @@ int LinkedGraph::getLCC(){
 }
 
 Node* LinkedGraph::findRoot(Node* node) {
-    while (node->next != nullptr) {
-        node = node->next;
-    }
-    return node;
-}
+    if (node->next == nullptr)
+        return node;
 
+    // Path compression
+    node->next = findRoot(node->next);
+    return node->next;
+}
 void LinkedGraph::addEdgeSF(std::vector<int>& stubs) {
     std::random_device rd;
     std::mt19937 gen(rd());
