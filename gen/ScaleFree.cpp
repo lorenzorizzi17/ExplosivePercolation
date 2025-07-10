@@ -66,13 +66,13 @@ double kappa_from_degree_sequence(const std::vector<int>& degrees) {
 }
 
 int main(){
-    int N = 2*1e5; // Number of nodes
-    int rep = 8;
-    int steps = 15;
+    int N = 5*1e5; // Number of nodes
+    int rep = 1;
+    int steps = 150;
 
     int types[1] = {1}; // 0 for RG, 1 for PR
-    double alphas[1] = {2.4}; // Different alpha values
-    int kmins[2] = {1, 2}; // Different kmin values
+    double alphas[1] = {2.2}; // Different alpha values
+    int kmins[1] = {2}; // Different kmin values
 
     for(int type : types){  // 0 for RG, 1 for PR
         for (double alpha : alphas) { // Different alpha values

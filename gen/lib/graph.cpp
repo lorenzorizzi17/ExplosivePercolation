@@ -119,6 +119,7 @@ void LinkedGraph::addEdgeSFPR(std::vector<int>& stubs) {
     if (stubs.size() < 4) {
         return;
     }
+    // choose 4 stubs randomly
     int i1, i2, i3, i4;
     do {
         i1 = dis(gen);
@@ -127,6 +128,7 @@ void LinkedGraph::addEdgeSFPR(std::vector<int>& stubs) {
         i4 = dis(gen);
     } while (i1 == i2 || i1 == i3 || i1 == i4 || i2 == i3 || i2 == i4 || i3 == i4);
 
+    // Get the iterators for the stubs
     auto it1 = stubs.begin();
     std::advance(it1, i1);
     auto it2 = stubs.begin();
@@ -136,6 +138,7 @@ void LinkedGraph::addEdgeSFPR(std::vector<int>& stubs) {
     auto it4 = stubs.begin();
     std::advance(it4, i4);
 
+    // Ensure that the stubs are in increasing order (so that erasing them does not mess things up)
     if (it2 < it1) {
         std::swap(it1, it2);
     }
@@ -146,17 +149,18 @@ void LinkedGraph::addEdgeSFPR(std::vector<int>& stubs) {
     int stub1 = *it1, stub2 = *it2;
     int stub3 = *it3, stub4 = *it4;
 
+    // Find the roots of all 4 candidate nodes ...
     Node* rootStub1 = findRoot(&nodes[stub1]);
     Node* rootStub2 = findRoot(&nodes[stub2]);
     Node* rootStub3 = findRoot(&nodes[stub3]);
     Node* rootStub4 = findRoot(&nodes[stub4]);
-
+    // ... and their cluster size
     int S1 = rootStub1->ClusterSize;
     int S2 = rootStub2->ClusterSize;
     int S3 = rootStub3->ClusterSize;
     int S4 = rootStub4->ClusterSize;
-
-    if (S1 * S2 < S3 * S4) { //choose stub1 and stub2
+    // product rule
+    if (S1 * S2 < S3 * S4 || (S1 * S2 == S3 * S4 && dis(gen) % 2 == 0)) { //choose stub1 and stub2
         nodes[stub1].neighbors.push_back(&nodes[stub2]);
         nodes[stub2].neighbors.push_back(&nodes[stub1]);
 
@@ -170,7 +174,7 @@ void LinkedGraph::addEdgeSFPR(std::vector<int>& stubs) {
                 rootStub1->ClusterSize += S2; // Update the size of the cluster of stub1
             }
         }
-
+        // Erase the stubs that have been used
         stubs.erase(it2);  
         stubs.erase(it1);  
     } else {

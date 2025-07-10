@@ -148,7 +148,7 @@ void HistoClusterDistribution(std::string type, std::string m1, std::string m2, 
         graphs[i]->SetMarkerSize(.8);
         graphs[i]->SetLineColor(colors[i]);
         graphs[i]->SetMarkerColor(colors[i]);
-        graphs[i]->SetTitle("Finite cluster size distribution (SR);Cluster size s;Occurrences");
+        graphs[i]->SetTitle("Finite cluster size distribution (PR);Cluster size s;Occurrences");
         graphs[i]->GetXaxis()->SetLimits(1, 5*1e2);
     }
 
@@ -279,7 +279,7 @@ void HistoDD() {
 
 
 
-void plotDeltaM(){
+void plotDeltaM(double exponent){
     gStyle->SetOptStat(0); // Niente box statistiche
 
     TGraph *gr = new TGraph("../data/deltaM/ER.txt");
@@ -289,16 +289,19 @@ void plotDeltaM(){
 
     for (int i = 0; i < n; ++i) {
         if (x[i] != 0)               
-            y[i] = y[i] / TMath::Power(x[i],2./3.);      
+            y[i] = y[i] / TMath::Power(x[i],exponent);      
         else
             y[i] = 0;                
     }
-    gr->SetTitle("Delta M evolution; N. edges; Delta M");
+    gr->SetTitle("Scaling law for #Delta M;N^{#frac{2}{3}};#Delta M");
     gr->SetMarkerStyle(20);
     gr->SetMarkerColor(kBlue+1);
+    gr->SetMarkerSize(3);
     gr->SetLineColor(kBlue+1);
     gr->SetLineWidth(2);
     gr->SetMarkerSize(0.7);
+    gr->SetMinimum(0);
+    gr->SetMaximum(20);
     
     TGraph *gr2 = new TGraph("../data/deltaM/PR.txt");
     int n2 = gr2->GetN();              // Numero di punti
@@ -307,16 +310,19 @@ void plotDeltaM(){
 
     for (int i = 0; i < n2; ++i) {
         if (x2[i] != 0)               
-            y2[i] = y2[i] / TMath::Power(x2[i],2./3.);      
+            y2[i] = y2[i] / TMath::Power(x2[i],exponent);      
         else
             y2[i] = 0;                
     }
 
     gr2->SetMarkerStyle(20);
     gr2->SetMarkerColor(kRed+1);
+    gr2->SetMarkerSize(3);
     gr2->SetLineColor(kRed+1);
     gr2->SetLineWidth(2);
     gr2->SetMarkerSize(0.7);
+    gr2->SetMinimum(0);
+    gr2->SetMaximum(20);
 
     TGraph *gr3 = new TGraph("../data/deltaM/SR.txt");
     int n3 = gr3->GetN();              // Numero di punti
@@ -325,7 +331,7 @@ void plotDeltaM(){
 
     for (int i = 0; i < n3; ++i) {
         if (x3[i] != 0)               
-            y3[i] = y3[i] / TMath::Power(x3[i],2./3.);      
+            y3[i] = y3[i] / TMath::Power(x3[i],exponent);      
         else
             y3[i] = 0;                
     }
@@ -334,23 +340,29 @@ void plotDeltaM(){
     gr3->SetMarkerColor(kOrange+1);
     gr3->SetLineColor(kOrange+1);
     gr3->SetLineWidth(2);
+    gr3->SetMarkerSize(3);
     gr3->SetMarkerSize(0.7);
-    
+    gr3->SetMinimum(0);
+    gr3->SetMaximum(20);
+
     TGraph *gr4 = new TGraph("../data/deltaM/BF.txt");
     int n4 = gr4->GetN();            
     double *x4 = gr4->GetX();        
     double *y4 = gr4->GetY();      
     for (int i = 0; i < n4; ++i) {
         if (x4[i] != 0)               
-            y4[i] = y4[i] / TMath::Power(x4[i],2./3.);      
+            y4[i] = y4[i] / TMath::Power(x4[i],exponent);      
         else
             y4[i] = 0;                
     }
     gr4->SetMarkerStyle(20);
     gr4->SetMarkerColor(kGreen+1);
+    gr4->SetMarkerSize(3);
     gr4->SetLineColor(kGreen+1);
     gr4->SetLineWidth(2);
     gr4->SetMarkerSize(0.7);
+    gr4->SetMinimum(0);
+    gr4->SetMaximum(20);
 
     gr->Draw("ALP");  // A=axis, L=line, P=points
     gr2->Draw("LP SAME");  // A=axis, L=line, P
