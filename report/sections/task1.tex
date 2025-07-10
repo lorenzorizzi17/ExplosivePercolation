@@ -75,6 +75,44 @@ The most interesting result is, however, that for $\gamma = 2.6 < 3$ a phase tra
 \section{Supplementary material}
 \subsection{Scaling law for $\Delta m$}
 \label{par:scaling}
+In its seminal work \cite{Achlioptas}, Achlioptas proposes an operational method to decide whether the observed PT is continuous or discontinuous. Consider again the procedure presented in Par. \ref{par::intro}, where edges are gradually added $m = m(t) = t$ following different protocols (ER, PR, SR, BF) and the LCC size is monitored. We will define two edge value $m_0$ and $m_1$ at different times such that:
+\begin{equation}
+	\begin{cases}
+		m_0 = \min_{m < M}\{S > \sqrt{N}\} \\
+		m_1 = \min_{m < M}\{ S > 0.5 N\} 
+	\end{cases}
+\end{equation}
+Put in other words, $m_0$ is the minimum number of edges needed for the LCC to be larger than $0.5N$ (and similarly for $m_1$). The difference $\Delta$, called transition window, is defined as $\Delta = m_1 - m_0$ and provide a quantitative way to define how abrupt the PT is\footnote{The choice of the endpoints is, up to a certain extent, arbitrary. The value of $m_0$ is chosen because, usually, at criticality the LCC scale logarithmically with $N$, and thus provides an estimate of the critical point}.  
+
+As claimed in \cite{Achlioptas}, $\Delta$ should scale linearly for continuous PTs, $\Delta \sim N$. So by observing the scaling behaviour of $\Delta$ in simulations, one can characterize a bit further the PT. Results are shown in Fig. \ref{fig::ScalingDelta}. For both ER and BF rule, $\frac{\Delta }{N}$ seems indeed to converge to a finite value when $N$ is large enough and the results we obtained are compatible with Achlioptas's findings. At variance, when using PR or SR rule, the curves tend to collapse at $0$, suggesting a sub-linear behaviour. And in fact, plotting $\frac{\Delta}{N^{\alpha}}$ with $\alpha = \frac{2}{3}$ (Fig. \ref{fig::ScalingDelta23}), results from PR and SR now stabilizes to a small but different from $0$ value (again, in agreement with \cite{Achlioptas}). This means that explosive percolation is characterized by a sub-linear scaling law of the critical window:
+$$
+\Delta \sim N^{\frac{2}{3}}
+$$
+If $m_0$ is interpreted as an estimate of the critical point and $m_1$ a point where the GCC has already emerged, than one can the distance between the percolating phase and the critical point gets smaller and smaller when $N \to \infty$. 
+This implies that, at criticality, a constant fraction of the vertices is accumulated into a single giant cluster within a sub-linear number of steps \cite{PercolationReview}
+
+However, in 2009, Ziff \cite{Ziff} showed that, for the regular percolation on a 2D lattice, $\Delta \sim N^{\alpha}$ with $\alpha \neq 1$, so this is not conclusive evidence that explosive percolation is a discontinuous PT.
+It is today accepted that EP under Achlioptas processes are actually continuous PTs, but with a universality class
+different from all the others percolative processes.
+\begin{figure}
+	\centering
+	\begin{subfigure}[t]{0.48\linewidth}
+		\includegraphics[width=\linewidth]{images/ScalingLaw.pdf}
+		\vspace{-28pt}
+		
+		\caption{}
+		\label{fig::ScalingDelta}
+	\end{subfigure}
+	\hspace{3pt}
+	\begin{subfigure}[t]{0.48\linewidth}
+		\includegraphics[width=\linewidth]{images/ScalingLaw23.pdf}
+		\vspace{-28pt}
+		\caption{} 
+		\label{fig::ScalingDelta23}
+	\end{subfigure}
+	\vspace{-10pt}
+	\caption{\textit{(a) LCC size vs. added edges $m/N$, $N = 10^6$, randomly connecting stubs until a power law is reached (classical percolation on SF networks)} (b) \textit{LCC size vs.\ added edges $m/N$, $N = 10^6$, using PR rule to connect stubs. Averages on $10$ independent realizations}}
+\end{figure}
 
 \subsection{Cluster size distribution}
 Let us investigate further the behaviour of the cluster size distribution of continuous PTs. Defining $n_s$ as the number of clusters of size $s$ per node, then out of criticality $n_s$ has exponentially distributed tails. When approaching the critical point, the distribution becomes a power law
@@ -104,8 +142,44 @@ Thus, we can collect the cluster distribution $n_s$ at different value of $m / N
 	\begin{subfigure}[b]{0.45\linewidth}
 		\includegraphics[width=\linewidth]{images/ClusterDistrSR.pdf}
 	\end{subfigure}
-	\caption{\textit{Finite cluster size distribution at and around criticality. As expected, when $m \approx m_c$, the distribution appears approximately as a power law. Simulation run on networks with $N = 10^6$, over $10$ independent realizations}}
+	\caption{\textit{Finite cluster size distribution at and around criticality. As expected, when $m \approx m_c$, the distribution appears approximately as a power law (the critical value can be estimated inspecting Fig.\ref{fig::S}). Simulation run on networks with $N = 10^6$, over $10$ independent realizations}}
 	\label{fig:ClusterDistr}
 \end{figure}
+
+\subsection{Again on SF networks}
+In Par.\ref{par::SF}, explosive percolation was presented on scale-free networks. In this appendix, we are going to show more processed data and explain the theoretical framework behind SF networks.
+
+Using our configuration model, we will impose a discrete degree distribution $P(k)$:
+\begin{equation}
+	P(k) = \frac{1}{Z} k^{-\gamma}
+	\label{eq:Het}
+\end{equation}
+To normalize it, we need to set at least two boundaries, $k_{min}, k_{max}$. We choose $k_{max} = k_{min} N^{\frac{1}{\gamma - 1}}$, i.e. the natural cutoff and $k_{min}$ is a free parameter:
+$$
+Z = \sum_{k_{min}}^{k_{max}}k^{-\gamma} 
+$$
+As $N \to \infty$, we can safely assume $k_{max} = \infty$ for computations purposes. 
+
+For uncorrelated networks, the presence of a GCC is conditioned to the Molloy-Reed coefficient $\kappa$:
+$$
+\kappa = \frac{\langle k^2 \rangle}{\langle k \rangle}
+$$
+Using Eq. \ref{eq:Het}, we can compute the statistical moments. Setting $k_{min}=1$:
+\begin{equation}
+	\begin{aligned}
+		\langle k^2 \rangle = \frac{1}{Z} \sum_{k_{min}}^{\infty} k^{2-\gamma} = \frac{\zeta(\gamma-2)}{\zeta(\gamma)}  \\
+		\langle k \rangle = \frac{1}{Z} \sum_{k_{min}}^{\infty} k^{1-\gamma} = \frac{\zeta(\gamma-1)}{\zeta(\gamma)}  \\
+	\end{aligned}
+\end{equation}
+whereas, for $k_{min} = 2$, 
+
+\begin{equation}
+\begin{aligned}
+	\langle k^2 \rangle = \frac{1}{Z} \sum_{k_{min}}^{\infty} k^{2-\gamma} = \frac{\zeta(\gamma-2)-1}{\zeta(\gamma)-1}  \\
+	\langle k \rangle = \frac{1}{Z} \sum_{k_{min}}^{\infty} k^{1-\gamma} = \frac{\zeta(\gamma-1)-1}{\zeta(\gamma)-1}  \\
+\end{aligned}
+\end{equation}
+
+
 
 \newpage

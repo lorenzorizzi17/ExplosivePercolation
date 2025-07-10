@@ -1,4 +1,4 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{5}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -33,5 +33,13 @@ Filippo Radicchi and Santo Fortunato.
 \newblock \emph{Phys. Rev. E}, 81:\penalty0 036110, Mar 2010.
 \newblock \doi{10.1103/PhysRevE.81.036110}.
 \newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevE.81.036110}.
+
+\bibitem[Ziff(2009)]{Ziff}
+Robert~M. Ziff.
+\newblock Explosive growth in biased dynamic percolation on two-dimensional
+  regular lattice networks.
+\newblock \emph{Phys. Rev. Lett.}, 103:\penalty0 045701, Jul 2009.
+\newblock \doi{10.1103/PhysRevLett.103.045701}.
+\newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevLett.103.045701}.
 
 \end{thebibliography}

@@ -278,109 +278,57 @@ void HistoDD() {
 }
 
 
+///////////////////////////////////////////////
+// Displays the scaling law for Delta M
+// for different rules (ER, PR, SR, BF)
+// when the number of edges is varied
+///////////////////////////////////////////////
 
 void plotDeltaM(double exponent){
-    gStyle->SetOptStat(0); // Niente box statistiche
+    gStyle->SetOptStat(0); 
 
-    TGraph *gr = new TGraph("../data/deltaM/ER.txt");
-    int n = gr->GetN();              // Numero di punti
-    double *x = gr->GetX();          // Puntatore agli array x
-    double *y = gr->GetY();          // Puntatore agli array y
+    TGraph *graphs[4];
+    int colors[4] = {kBlue+1, kRed+1, kOrange+1, kGreen+1};
+    graphs[0] = new TGraph("../data/deltaM/ER.txt");
+    graphs[1] = new TGraph("../data/deltaM/PR.txt");
+    graphs[2] = new TGraph("../data/deltaM/SR.txt");
+    graphs[3] = new TGraph("../data/deltaM/BF.txt");
 
-    for (int i = 0; i < n; ++i) {
-        if (x[i] != 0)               
-            y[i] = y[i] / TMath::Power(x[i],exponent);      
-        else
-            y[i] = 0;                
-    }
-    gr->SetTitle("Scaling law for #Delta M;N^{#frac{2}{3}};#Delta M");
-    gr->SetMarkerStyle(20);
-    gr->SetMarkerColor(kBlue+1);
-    gr->SetMarkerSize(3);
-    gr->SetLineColor(kBlue+1);
-    gr->SetLineWidth(2);
-    gr->SetMarkerSize(0.7);
-    gr->SetMinimum(0);
-    gr->SetMaximum(20);
-    
-    TGraph *gr2 = new TGraph("../data/deltaM/PR.txt");
-    int n2 = gr2->GetN();              // Numero di punti
-    double *x2 = gr2->GetX();          // Puntatore agli array x
-    double *y2 = gr2->GetY();          // Puntatore agli array y
-
-    for (int i = 0; i < n2; ++i) {
-        if (x2[i] != 0)               
-            y2[i] = y2[i] / TMath::Power(x2[i],exponent);      
-        else
-            y2[i] = 0;                
+    for (int i = 0; i < 4; i++) {
+        graphs[i]->SetTitle("Scaling law for #Delta;N;#Delta / N");
+        graphs[i]->SetMarkerStyle(20);
+        graphs[i]->SetMarkerColor(colors[i]);
+        graphs[i]->SetLineColor(colors[i]);
+        graphs[i]->SetLineWidth(2);
+        graphs[i]->SetMarkerSize(0.7);
+        graphs[i]->SetMinimum(-0.05);
+        graphs[i]->SetMaximum(0.28);
+        int n = graphs[i]->GetN();       
+        double *x = graphs[i]->GetX();         
+        double *y = graphs[i]->GetY();          
+        for (int i = 0; i < n; ++i) {
+            if (x[i] != 0)               
+                y[i] = y[i] / TMath::Power(x[i],exponent);      
+            else
+                y[i] = 0;                
+        }
     }
 
-    gr2->SetMarkerStyle(20);
-    gr2->SetMarkerColor(kRed+1);
-    gr2->SetMarkerSize(3);
-    gr2->SetLineColor(kRed+1);
-    gr2->SetLineWidth(2);
-    gr2->SetMarkerSize(0.7);
-    gr2->SetMinimum(0);
-    gr2->SetMaximum(20);
+    graphs[0]->Draw("ALP");  
+    graphs[1]->Draw("LP SAME");  
+    graphs[2]->Draw("LP SAME");  
+    graphs[3]->Draw("LP SAME");  
 
-    TGraph *gr3 = new TGraph("../data/deltaM/SR.txt");
-    int n3 = gr3->GetN();              // Numero di punti
-    double *x3 = gr3->GetX();          // Puntatore agli array x
-    double *y3 = gr3->GetY();          // Puntatore agli array y
-
-    for (int i = 0; i < n3; ++i) {
-        if (x3[i] != 0)               
-            y3[i] = y3[i] / TMath::Power(x3[i],exponent);      
-        else
-            y3[i] = 0;                
-    }
-
-    gr3->SetMarkerStyle(20);
-    gr3->SetMarkerColor(kOrange+1);
-    gr3->SetLineColor(kOrange+1);
-    gr3->SetLineWidth(2);
-    gr3->SetMarkerSize(3);
-    gr3->SetMarkerSize(0.7);
-    gr3->SetMinimum(0);
-    gr3->SetMaximum(20);
-
-    TGraph *gr4 = new TGraph("../data/deltaM/BF.txt");
-    int n4 = gr4->GetN();            
-    double *x4 = gr4->GetX();        
-    double *y4 = gr4->GetY();      
-    for (int i = 0; i < n4; ++i) {
-        if (x4[i] != 0)               
-            y4[i] = y4[i] / TMath::Power(x4[i],exponent);      
-        else
-            y4[i] = 0;                
-    }
-    gr4->SetMarkerStyle(20);
-    gr4->SetMarkerColor(kGreen+1);
-    gr4->SetMarkerSize(3);
-    gr4->SetLineColor(kGreen+1);
-    gr4->SetLineWidth(2);
-    gr4->SetMarkerSize(0.7);
-    gr4->SetMinimum(0);
-    gr4->SetMaximum(20);
-
-    gr->Draw("ALP");  // A=axis, L=line, P=points
-    gr2->Draw("LP SAME");  // A=axis, L=line, P
-    gr3->Draw("LP SAME");  // A=axis, L=line, P=points
-    gr4->Draw("LP SAME");  // A=axis, L=line, P=points
-
-    // legend
     TLegend *legend = new TLegend(0.15, 0.65, 0.4, 0.85);
-    legend->AddEntry(gr, "ER", "lp");
-    legend->AddEntry(gr2, "BF", "lp");
-    legend->AddEntry(gr3, "PR", "lp");
-    legend->AddEntry(gr4, "SR", "lp");
+    legend->AddEntry(graphs[0], "ER", "lp");
+    legend->AddEntry(graphs[1], "BF", "lp");
+    legend->AddEntry(graphs[2], "PR", "lp");
+    legend->AddEntry(graphs[3], "SR", "lp");
 
     legend->SetFillColorAlpha(kWhite, 0.8);
     legend->SetBorderSize(0);
     legend->SetTextSize(0.03);
     legend->Draw();
-
 
     gPad->Modified();
     gPad->Update();
