@@ -172,7 +172,7 @@ void plotSF(std::string fam, std::string type, double alpha1, double alpha2, dou
     gStyle->SetOptStat(0); // Niente box statistiche
 
     TGraph *gr = new TGraph(("../data/"+fam+"/"+type+"SF_gamma"+ std::to_string(alpha1)+"_kmin"+std::to_string(kmin)+".txt").c_str());
-    gr->SetTitle("Order parameter S (scale free nets); m / N; S");
+    gr->SetTitle("Order parameter S (scale free nets); m / M; S");
     gr->SetMarkerStyle(20);
     gr->SetMarkerColor(kBlue+1);
     gr->SetLineColor(kBlue+1);
@@ -226,6 +226,14 @@ void plotSF(std::string fam, std::string type, double alpha1, double alpha2, dou
     legend->SetBorderSize(0);
     legend->SetTextSize(0.03);
     legend->Draw();
+
+
+    // Draw two vertical lines at x = 0.388 and x = 0.6
+    TLine *line1 = new TLine(1./(2.80898-1), 0, 1./(2.80898-1), 0.5);
+    line1->SetLineColor(kOrange+2);
+    line1->SetLineStyle(2); // Dashed line
+    line1->SetLineWidth(2);
+    line1->Draw("same");
 }
 
 

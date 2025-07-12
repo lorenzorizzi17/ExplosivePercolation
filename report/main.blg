@@ -3,51 +3,46 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: plainnat.bst
 Database file #1: bibliography.bib
-Warning--I didn't find a database entry for "bibid"
 Warning--I didn't find a database entry for "PercolationReview"
-Warning--I didn't find a database entry for "barrat2008dynamical"
-Warning--I didn't find a database entry for "de2013mathematical"
-Warning--to sort, need author or key in weforumProtectingCritical
-Warning--empty year in weforumProtectingCritical
-You've used 5 entries,
+You've used 8 entries,
             2773 wiz_defined-function locations,
-            645 strings with 6131 characters,
-and the built_in function-call counts, 2239 in all, are:
-= -- 210
-> -- 109
-< -- 2
-+ -- 38
-- -- 33
-* -- 194
-:= -- 345
-add.period$ -- 24
-call.type$ -- 5
-change.case$ -- 26
-chr.to.int$ -- 5
-cite$ -- 13
-duplicate$ -- 96
-empty$ -- 187
-format.name$ -- 39
-if$ -- 469
+            672 strings with 6844 characters,
+and the built_in function-call counts, 4291 in all, are:
+= -- 388
+> -- 290
+< -- 3
++ -- 98
+- -- 90
+* -- 392
+:= -- 701
+add.period$ -- 43
+call.type$ -- 8
+change.case$ -- 54
+chr.to.int$ -- 8
+cite$ -- 16
+duplicate$ -- 159
+empty$ -- 299
+format.name$ -- 100
+if$ -- 876
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 4
-newline$ -- 42
-num.names$ -- 16
-pop$ -- 47
+missing$ -- 7
+newline$ -- 67
+num.names$ -- 32
+pop$ -- 81
 preamble$ -- 1
-purify$ -- 21
+purify$ -- 46
 quote$ -- 0
-skip$ -- 69
+skip$ -- 124
 stack$ -- 0
-substring$ -- 74
-swap$ -- 8
+substring$ -- 127
+swap$ -- 13
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 55
-warning$ -- 2
-while$ -- 15
+type$ -- 88
+warning$ -- 0
+while$ -- 30
 width$ -- 0
-write$ -- 88
-(There were 6 warnings)
+write$ -- 148
+(There was 1 warning)

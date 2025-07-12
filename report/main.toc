@@ -7,7 +7,11 @@
 \contentsline {subsection}{\numberline {1.4.1}Scaling law for $\Delta m$}{4}{subsection.1.4.1}%
 \contentsline {subsection}{\numberline {1.4.2}Cluster size distribution}{4}{subsection.1.4.2}%
 \contentsline {subsection}{\numberline {1.4.3}Again on SF networks}{5}{subsection.1.4.3}%
-\contentsline {chapter}{\numberline {2}Task title...}{8}{chapter.2}%
-\contentsline {section}{\numberline {2.1}A section...}{8}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Another section...}{8}{section.2.2}%
-\contentsline {chapter}{\numberline {3}Bibliography}{9}{chapter.3}%
+\contentsline {chapter}{\numberline {2}Building a railway graph using EGM Dataset}{9}{chapter.2}%
+\contentsline {section}{\numberline {2.1}The EuroGlobalMap dataset}{9}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Building the graph}{9}{section.2.2}%
+\contentsline {paragraph}{Stations analysis}{9}{paragraph*.8}%
+\contentsline {paragraph}{Railway lines analysis}{10}{paragraph*.9}%
+\contentsline {paragraph}{Results}{10}{paragraph*.11}%
+\contentsline {section}{\numberline {2.3}Supplementary material}{12}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Bibliography}{13}{chapter.3}%

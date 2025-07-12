@@ -66,19 +66,19 @@ double kappa_from_degree_sequence(const std::vector<int>& degrees) {
 }
 
 int main(){
-    int N = 5*1e5; // Number of nodes
-    int rep = 1;
+    int N = 1e6; // Number of nodes
+    int rep = 4;
     int steps = 150;
 
-    int types[1] = {1}; // 0 for RG, 1 for PR
-    double alphas[1] = {2.2}; // Different alpha values
-    int kmins[1] = {2}; // Different kmin values
+    int types[1] = {0}; // 0 for RG, 1 for PR
+    double alphas[1] = {3.8}; // Different alpha values
+    int kmins[1] = {1}; // Different kmin values
 
     for(int type : types){  // 0 for RG, 1 for PR
         for (double alpha : alphas) { // Different alpha values
             for (int kmin : kmins) { // Different kmin values
 
-                int kmax = static_cast<int>(std::pow(N, 1.0 / (alpha - 1)));
+                int kmax = kmin*static_cast<int>(std::pow(N, 1.0 / (alpha - 1)));
                 std::vector<int> degrees = generatePowerLawDegrees(N, alpha, kmin, kmax);
                 std::vector<int> stubs = generateStubs(degrees);
 
