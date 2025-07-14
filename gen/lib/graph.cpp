@@ -5,6 +5,8 @@
 #include<algorithm>
 
 LinkedGraph::LinkedGraph(int n) : N(n) {
+    std::random_device rd;
+    m_gen = std::mt19937(rd());
     nodes.reserve(N); // Reserve space for N nodes
     for (int i = 0; i < N; i++){
         nodes.push_back(Node());
@@ -20,7 +22,7 @@ std::vector<int> LinkedGraph::getClusterDistribution() const {
         }
     }
     // discard the largest one
-    auto it = std::max_element(result.begin(), result.end(), [](int a, int b) { return a < b; });
+    //auto it = std::max_element(result.begin(), result.end(), [](int a, int b) { return a < b; });
     return result;
 }
 
@@ -58,22 +60,20 @@ int LinkedGraph::getLCC(){
 Node* LinkedGraph::findRoot(Node* node) {
     if (node->next == nullptr)
         return node;
-
     // Path compression
     node->next = findRoot(node->next);
     return node->next;
 }
+
 void LinkedGraph::addEdgeSF(std::vector<int>& stubs) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, stubs.size() - 1);
     if (stubs.size() < 2) {
         return;
     }
     int i1, i2;
     do {
-        i1 = dis(gen);
-        i2 = dis(gen);
+        i1 = dis(m_gen);
+        i2 = dis(m_gen);
     } while (i1 == i2);
 
     auto it1 = stubs.begin();
@@ -112,8 +112,6 @@ void LinkedGraph::addEdgeSF(std::vector<int>& stubs) {
 }
 
 void LinkedGraph::addEdgeSFPR(std::vector<int>& stubs) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, stubs.size() - 1);
 
     if (stubs.size() < 4) {
@@ -122,10 +120,10 @@ void LinkedGraph::addEdgeSFPR(std::vector<int>& stubs) {
     // choose 4 stubs randomly
     int i1, i2, i3, i4;
     do {
-        i1 = dis(gen);
-        i2 = dis(gen);
-        i3 = dis(gen);
-        i4 = dis(gen);
+        i1 = dis(m_gen);
+        i2 = dis(m_gen);
+        i3 = dis(m_gen);
+        i4 = dis(m_gen);
     } while (i1 == i2 || i1 == i3 || i1 == i4 || i2 == i3 || i2 == i4 || i3 == i4);
 
     // Get the iterators for the stubs
@@ -160,7 +158,7 @@ void LinkedGraph::addEdgeSFPR(std::vector<int>& stubs) {
     int S3 = rootStub3->ClusterSize;
     int S4 = rootStub4->ClusterSize;
     // product rule
-    if (S1 * S2 < S3 * S4 || (S1 * S2 == S3 * S4 && dis(gen) % 2 == 0)) { //choose stub1 and stub2
+    if (S1 * S2 < S3 * S4 || (S1 * S2 == S3 * S4 && dis(m_gen) % 2 == 0)) { //choose stub1 and stub2
         nodes[stub1].neighbors.push_back(&nodes[stub2]);
         nodes[stub2].neighbors.push_back(&nodes[stub1]);
 
@@ -199,11 +197,9 @@ void LinkedGraph::addEdgeSFPR(std::vector<int>& stubs) {
 
 void LinkedGraph::addRandomEdge() {
     // first of all, select two random nodes
-    std::random_device rd;
-    std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, N - 1);
-    int u = dis(gen);
-    int v = dis(gen);
+    int u = dis(m_gen);
+    int v = dis(m_gen);
 
     Node* rootU = findRoot(&nodes[u]);  // Find the root of node u
     Node* rootV = findRoot(&nodes[v]);  // Find the root of node v
@@ -224,8 +220,6 @@ void LinkedGraph::addRandomEdge() {
         }
     }
 }
-
-
 
 
 
@@ -258,16 +252,14 @@ void LinkedGraph::addRandomEdges(int numEdges) {
 
 void LinkedGraph::addRandomProductRule(){
     // Select two random nodes
-    std::random_device rd;
-    std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, N - 1);
 
     // first pair (one edge)
-    int u1 = dis(gen);
-    int u2 = dis(gen);
+    int u1 = dis(m_gen);
+    int u2 = dis(m_gen);
     // second pair (one edge)
-    int v1 = dis(gen);
-    int v2 = dis(gen);
+    int v1 = dis(m_gen);
+    int v2 = dis(m_gen);
 
     Node* rootU1 = findRoot(&nodes[u1]);  // Find the root of node u1
     Node* rootU2 = findRoot(&nodes[u2]);  // Find the root of node u2
@@ -308,16 +300,14 @@ void LinkedGraph::addRandomEdgesProductRule(int numEdges) {
 
 void LinkedGraph::addRandomSumRule(){
     // Select two random nodes
-    std::random_device rd;
-    std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, N - 1);
 
     // first pair (one edge)
-    int u1 = dis(gen);
-    int u2 = dis(gen);
+    int u1 = dis(m_gen);
+    int u2 = dis(m_gen);
     // second pair (one edge)
-    int v1 = dis(gen);
-    int v2 = dis(gen);
+    int v1 = dis(m_gen);
+    int v2 = dis(m_gen);
 
     Node* rootU1 = findRoot(&nodes[u1]);  // Find the root of node u1
     Node* rootU2 = findRoot(&nodes[u2]);  // Find the root of node u2
@@ -359,13 +349,11 @@ void LinkedGraph::addRandomEdgesSumRule(int numEdges) {
 
 void LinkedGraph::addEdgeBFRule(){
     // Select two random nodes
-    std::random_device rd;
-    std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, N - 1);
 
     // first pair (one edge)
-    int u1 = dis(gen);
-    int u2 = dis(gen);
+    int u1 = dis(m_gen);
+    int u2 = dis(m_gen);
 
     if (nodes[u1].next == nullptr && nodes[u2].next == nullptr && nodes[u2].ClusterSize == 1 && nodes[u1].ClusterSize == 1 && u1 != u2) { //so both of them are root nodes
         nodes[u1].neighbors.push_back(&nodes[u2]); // Add v as a neighbor of u

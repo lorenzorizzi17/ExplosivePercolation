@@ -8,6 +8,7 @@
 
 #include "./include/graph.hpp"
 
+// Extract the degree sequence from a power-law distribution using inverse trasnform method
 std::vector<int> generatePowerLawDegrees(int N, double alpha, int kmin, int kmax) {
     std::vector<double> cdf;
     double norm = 0.0;
@@ -41,7 +42,7 @@ std::vector<int> generatePowerLawDegrees(int N, double alpha, int kmin, int kmax
     return degrees;
 }
 
-
+// generate stubs from the degree sequence
 std::vector<int> generateStubs(const std::vector<int>& degrees) {
     std::vector<int> stubs;
     for (int i = 0; i < degrees.size(); ++i) {
@@ -50,7 +51,7 @@ std::vector<int> generateStubs(const std::vector<int>& degrees) {
     return stubs;
 }
 
-
+// evaluate Molloy-Reed's kappa coefficient from the degree sequence
 double kappa_from_degree_sequence(const std::vector<int>& degrees) {
     if (degrees.empty()) return 0.0;
 
@@ -67,17 +68,17 @@ double kappa_from_degree_sequence(const std::vector<int>& degrees) {
 
 int main(){
     int N = 1e6; // Number of nodes
-    int rep = 4;
+    int rep = 1;
     int steps = 150;
 
     int types[1] = {0}; // 0 for RG, 1 for PR
-    double alphas[1] = {3.8}; // Different alpha values
+    double alphas[1] = {3.3}; // Different alpha values
     int kmins[1] = {1}; // Different kmin values
 
     for(int type : types){  // 0 for RG, 1 for PR
         for (double alpha : alphas) { // Different alpha values
             for (int kmin : kmins) { // Different kmin values
-
+                // Set k_max as the natural cutoff
                 int kmax = kmin*static_cast<int>(std::pow(N, 1.0 / (alpha - 1)));
                 std::vector<int> degrees = generatePowerLawDegrees(N, alpha, kmin, kmax);
                 std::vector<int> stubs = generateStubs(degrees);
@@ -111,7 +112,7 @@ int main(){
                 for (int thread = 0; thread < rep; ++thread){
                     auto localstub = stubs;
                     LinkedGraph graph(N); // Create an empty graph with N nodes
-                    std::vector<int> lcc; // Largest connected component size   ];
+                    std::vector<int> lcc; // Largest connected component size
                     std::vector<int> secondLargestClusterSize; // Second largest connected component size
                     std::vector<double> avgClusterSize; // Average cluster size
                     for(int i = 0; i < mMax; i += steps) {
