@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <omp.h>
+#include <chrono>
 
 #include "./include/graph.hpp"
 
@@ -67,6 +68,10 @@ double kappa_from_degree_sequence(const std::vector<int>& degrees) {
 }
 
 int main(){
+    // start a clock
+    auto start = std::chrono::high_resolution_clock::now();
+
+
     int N = 1e6; // Number of nodes
     int rep = 1;
     int steps = 150;
@@ -155,4 +160,9 @@ int main(){
             }
         }
     }
+
+    // stop the clock
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << "Elapsed time: " << elapsed.count() << " seconds";
 }
